@@ -2,187 +2,107 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 public class Work {
+    public static Scanner scan  = new Scanner(System.in);
+    public static String[][] loginDetails = {{"Lahiru", "1212"}};
+    public static String[][] supplierDetails = new String[0][0];
+
     public static void main(String[] args) {
-        Scanner scan = new Scanner(System.in);
-
-        String correctUsername = "Lahiru";
-        String correctPassword = "1212";
-
-
-        //loginPage(scan, correctUsername, correctPassword);
-        welcomeMenu(scan, correctUsername, correctPassword);
+//        loginPage();
+        welcomMenu();
     }
+    public static void loginPage() {
+        System.out.println("+------------------------------------------------------------------------------+");
+        System.out.println("|                               Login Page                                     |");
+        System.out.println("+------------------------------------------------------------------------------+");
 
-    public static void updateSupplier(Scanner scan, String[] supplierId, String[] supplierName) {
-        System.out.println("+---------------------------------------------------------------------+");
-        System.out.println("|                           UPDATE SUPPLIER                           |");
-        System.out.println("+---------------------------------------------------------------------+\n");
+        L1: while (true){
+            System.out.print("Enter username : ");
+            String username = scan.next();
 
-        boolean whileContinue = true;
-        while (whileContinue) {
-            System.out.println(supplierName.length);
-            System.out.print("Supplier id   : ");
-            String getSupplierId = scan.next();
-
-            boolean condition = false;
-            int j = 0;
-            for (int i = 0; i <supplierId.length; i++) {
-                if (supplierId[i].equals(getSupplierId)) {
-                    condition = true;
-                    j = i;
-                }else {
-                    condition = false;
-                }
-            }
-            if (condition == false) {
-                System.out.println("can't find the supplier id.try again!");
-            }else {
-                System.out.print("Supplier Name   : " + supplierName[j]);
-                String getSupplierName = scan.next();
-            }
-        }
-    }
-    public static String[] addSupplier(Scanner scan, String[] supplierDetails) {
-        System.out.println("+---------------------------------------------------------------------+");
-        System.out.println("|                             ADD SUPPLIER                            |");
-        System.out.println("+---------------------------------------------------------------------+\n");
-
-        int i = 0;
-
-        boolean condition = true;
-        L1: while (condition){
-            condition = false;
-            supplierDetails = growId(supplierDetails);
-            supplierName = growName(supplierName);
-            System.out.println(supplierId.length);
-            System.out.println(supplierName.length);
-
-            System.out.print("Supplier id   : ");
-            String getSupplierId = scan.next();
-
-            boolean condition2 = true;
-            for (String sId : supplierId) {
-                if (getSupplierId.equals(sId)) {
-                    System.out.println("already exists. try another supplier id!");
-                    condition2 =false;
-                    break;
-                }
-            }
-            if (condition2){
-                System.out.print("Supplier name :");
-                supplierName[i] = scan.next();
-                supplierId[i] = getSupplierId;
-                System.out.print("added successfully! Do you want to add another supplier(Y/N)? ");
-                char nextSupplierAdd = scan.next().charAt(0);
-
-                switch (nextSupplierAdd){
-                    case 'N': {
-                        clearConsole();
-                        break ;
-                    }
-                    case 'Y' : {
-                        condition = true;
-                        i++;
+            if (username.equals(loginDetails[0][0])){
+                L2: while (true){
+                    System.out.print("Enter password : ");
+                    String password = scan.next();
+                    if (password.equals(loginDetails[0][1])){
+                        System.out.println("Login success!");
+                        welcomMenu();
+                        break L1;
+                    }else {
+                        System.out.println("password is invalid. please try again!");
                     }
                 }
             }else {
-                condition = true;
+                System.out.println("Username is invalid. please try again!");
             }
         }
-        return supplierId;
     }
-
-    public static String[][] growId(String[][] supplierDetails) {
-        String[][] temp = new String[supplierDetails.length+1][supplierDetails[0].length];
-
-        for (int i = 0; i <supplierDetails.length; i++) {
-            temp[i][0] = supplierDetails[i][0];
-            temp[i][1] = supplierDetails[i][1];
-        }
-        return supplierDetails;
-    }
-    public static void supplierManage(Scanner scan) {
-        String[][] supplierDetails = new String[0][2];
-        String[] supplierId = new String[0];
-
-        boolean condition = true;
-        while (condition){
-
+    public static void welcomMenu() {
+        while (true){
+            clearConsole();
             System.out.println("+---------------------------------------------------------------------+");
-            System.out.println("|                           SUPPLIER MANAGE                           |");
+            System.out.println("|               WELCOME TO IJSE STOCK MANAGEMENT SYSTEM               |");
             System.out.println("+---------------------------------------------------------------------+\n");
 
-            System.out.println("[1] Add Supplier                                [2] Update Supplier\n" +
-                    "[3] Delete Supplier                             [4] View Supplier\n" +
-                    "[5] Search Supplier                             [6] Home Page");
-            System.out.print("Enter an option to continue > ");
-            int optionNum = scan.nextInt();
+            System.out.println( "[1] Change the Credentials                                    [2] Supplier Manage\n" +
+                                "[3] Stock Manage                                              [4] Log out\n" +
+                                "[5] Exit the system\n");
+            while (true){
+                System.out.print("Enter an option to continue > ");
+                int optionNum = scan.nextInt();
 
-            switch (optionNum){
-                case 1 : {
-                    clearConsole();
-                    supplierId = addSupplier(scan, supplierDetails);
-                    break;
-                }
-                case 2 : {
-                    clearConsole();
-                    System.out.println(supplierId.length);
-                    updateSupplier(scan, supplierDetails);
-                }
-                case 3 : {
-//                clearConsole();
-//                updateSupplier(scan, supplierId, supplierDetails);
-                }
-                case 4 : {
-//                clearConsole();
-//                updateSupplier(scan, supplierId, supplierDetails);
-                }
-                case 5 : {
-//                clearConsole();
-//                updateSupplier(scan, supplierId, supplierDetails);
-                }
-                case 6 : {
-//                clearConsole();
-//                updateSupplier(scan, supplierId, supplierDetails);
+                switch (optionNum){
+                    case 1: {
+                        credentialsManage();
+                        break;
+                    }
+                    case 2: {
+                        supplierManage();
+                        break;
+                    }
+                    case 3: {
+                        System.out.println(optionNum);
+                        break;
+                    }
+                    case 4: {
+                        logoutMenu();
+                        break;
+                    }
+                    case 5: {
+                        exitMenu();
+                        break;
+                    }
                 }
             }
         }
     }
-    public static void exitMenu(Scanner scan, String correctUsername, String correctPassword) {
-        System.exit(0);
-    }
-    public static void logoutMenu(Scanner scan, String correctUsername, String correctPassword) {
-        loginPage(scan,correctUsername, correctPassword);
-    }
-    public static void credentialsManage(Scanner scan, String correctUsername, String correctPassword) {
+    public static void credentialsManage() {
         clearConsole();
         System.out.println("+---------------------------------------------------------------------+");
         System.out.println("|                          CREDENTIAL MANAGE                          |");
         System.out.println("+---------------------------------------------------------------------+\n");
 
-        boolean condition =  true;
-        L1: while (condition){
+
+        L1: while (true){
             System.out.print("please enter username to verify it's you: ");
             String enterUsername = scan.next();
 
-            if (correctUsername.equals(enterUsername)){
+            if (loginDetails[0][0].equals(enterUsername)){
                 System.out.println("Hey " + enterUsername + ",");
                 L2: while (true){
                     System.out.print("Enter your current password: ");
                     String currentPassword = scan.next();
 
-                    if (currentPassword.equals(correctPassword)){
+                    if (currentPassword.equals(loginDetails[0][1])){
                         System.out.print("Enter your new password: ");
                         String newPassword = scan.next();
-                        correctPassword=newPassword;
+                        loginDetails[0][1]=newPassword;
 
                         System.out.print("password change successfully! Do you go to home page (Y/N): ");
                         char goToHomePage = scan.next().charAt(0);
 
                         switch (goToHomePage) {
                             case 'Y' : {
-                                clearConsole();
-                                welcomeMenu(scan, correctUsername, correctPassword);
+                                welcomMenu();
                             }
                             case 'N' : {
                                 break L1;
@@ -197,90 +117,233 @@ public class Work {
             }
         }
     }
-    public static void welcomeMenu(Scanner scan, String correctUsername, String correctPassword) {
-        System.out.println("+---------------------------------------------------------------------+");
-        System.out.println("|               WELCOME TO IJSE STOCK MANAGEMENT SYSTEM               |");
-        System.out.println("+---------------------------------------------------------------------+\n");
+    public static void logoutMenu() {
+        clearConsole();
+        loginPage();
+    }
+    public static void exitMenu() {
+        System.exit(0);
+    }
+    public static void supplierManage() {
+        while (true){
+            while (true){
+                clearConsole();
+                System.out.println("+---------------------------------------------------------------------+");
+                System.out.println("|                           SUPPLIER MANAGE                           |");
+                System.out.println("+---------------------------------------------------------------------+\n");
 
-        System.out.println("[1] Change the Credentials                                    [2] Supplier Manage\n" +
-                "[3] Stock Manage                                              [4] Log out\n" +
-                "[5] Exit the system\n");
+                System.out.println( "[1] Add Supplier                                [2] Update Supplier\n" +
+                                    "[3] Delete Supplier                             [4] View Supplier\n" +
+                                    "[5] Search Supplier                             [6] Home Page\n");
 
-        System.out.print("Enter option to continue > ");
-        int number = scan.nextInt();
+                System.out.print("Enter an option to continue > ");
+                int optionNum = scan.nextInt();
 
-        switch (number){
-            case 1 : {
-                credentialsManage(scan,correctUsername, correctPassword);
-                clearConsole();
-                break;
-            }
-            case 2 : {
-                clearConsole();
-                supplierManage(scan);
-                break;
-            }
-            case 3 : {
-                clearConsole();
-                System.out.println(number);
-                break;
-            }
-            case 4 : {
-                clearConsole();
-                logoutMenu(scan,correctUsername, correctPassword);
-                break;
-            }
-            case 5 : {
-                clearConsole();
-                exitMenu(scan,correctUsername, correctPassword);
-                break;
+                switch (optionNum){
+                    case 1: {
+                        addSupplier();
+                        break;
+                    }
+                    case 2: {
+                        updateSupplier();
+                        break;
+                    }
+                    case 3: {
+                        deleteSupplier();
+                        break;
+                    }
+                    case 4: {
+                        viewSupplier();
+                        break;
+                    }
+                    case 5: {
+
+                    }
+                    case 6: {
+
+                    }
+                }
             }
         }
     }
-    public static void loginPage(Scanner scan, String correctUsername, String correctPassword) {
-        System.out.println("+------------------------------------------------------------------------------+");
-        System.out.println("|                               Login Page                                     |");
-        System.out.println("+------------------------------------------------------------------------------+");
+    public static void addSupplier() {
+        clearConsole();
+        System.out.println("+---------------------------------------------------------------------+");
+        System.out.println("|                             ADD SUPPLIER                            |");
+        System.out.println("+---------------------------------------------------------------------+\n");
 
-        String username ="";
-        String password ="";
 
-       L1: while (username!=correctUsername || password!=correctPassword){
-           System.out.print("Enter username : ");
-           username = scan.next();
+        L1: while (true) {
+            System.out.print("Supplier id    :");
+            String id = scan.next();
 
-           if (username.equals(correctUsername)){
-               L2: while (password!=correctUsername){
-                   System.out.print("Enter password : ");
-                   password = scan.next();
-                   if (password.equals(correctPassword)){
-                       System.out.println("Login success!");
-                       clearConsole();
-                       welcomeMenu(scan, correctUsername, correctPassword);
-                       break L1;
-                   }else {
-                       System.out.println("password is invalid. please try again!");
-                   }
-               }
-           }else {
-               System.out.println("Username is invalid. please try again!");
-           }
-       }
+            L2: for (int i = 0; i <supplierDetails.length; i++) {
+                for (int j = 0; j <supplierDetails[i].length; j++) {
+                    if (supplierDetails[i][j].equals(id)){
+                        System.out.println("Supplier id already exists. please try again!");
+                        continue L1;
+                    }
+                }
+            }
+
+            boolean condition = true;
+            if(condition){
+                grow();
+                System.out.print("Supplier name  :");
+                supplierDetails[supplierDetails.length-1][1] = scan.next();
+                supplierDetails[supplierDetails.length-1][0] = id;
+
+                System.out.print("added successfully! Do you want to add another supplier? (Y/N)? ");
+                String supplierAdd = scan.next();
+
+                switch (supplierAdd){
+                    case "Y": {
+                        break;
+                    }
+                    case "N": {
+                        return;
+                    }
+                }
+            }
+        }
     }
-    public static void clearConsole() {
-        final String os = System.getProperty("os.name");
+    public static void updateSupplier() {
+        clearConsole();
+        System.out.println("+---------------------------------------------------------------------+");
+        System.out.println("|                           UPDATE SUPPLIER                           |");
+        System.out.println("+---------------------------------------------------------------------+\n");
+
+        while (true){
+            System.out.print("Supplier id    :");
+            String id = scan.next();
+
+            boolean condition = false;
+            int index = -1;
+                for (int i = 0; i <supplierDetails.length; i++) {
+                        if (supplierDetails[i][0].equals(id)){
+                            condition = true;
+                            index = i;
+                            break;
+                        }
+                }
+
+                if (condition){
+                    System.out.println("Supplier Name  :" + supplierDetails[index][1]);
+
+                    System.out.print("Enter the new supplier name : ");
+                    String newName = scan.next();
+                    supplierDetails[index][1]=newName;
+
+                    System.out.print("Update successfully! Do you want to update another supplier? (Y/N)? ");
+                    String supplierUpdate = scan.next();
+                    switch (supplierUpdate){
+                        case "Y": {
+                            break;
+                        }
+                        case "N": {
+                            return;
+                        }
+                    }
+                }else {
+                    System.out.println("can't find supplier id. please try again!");
+                }
+        }
+    }
+    public static void deleteSupplier() {
+        clearConsole();
+        System.out.println("+---------------------------------------------------------------------+");
+        System.out.println("|                           DELETE SUPPLIER                           |");
+        System.out.println("+---------------------------------------------------------------------+\n");
+
+        while (true) {
+            System.out.print("Supplier id    :");
+            String id = scan.next();
+
+            boolean condition = false;
+            int index = -1;
+            for (int i = 0; i < supplierDetails.length; i++) {
+                if (supplierDetails[i][0].equals(id)) {
+                    condition = true;
+                    index = i;
+                    break;
+                }
+            }
+
+            if (condition){
+                supplierDetails[index][0] = "null";
+                remove();
+
+                System.out.print("delete successfully! Do you want to delete another supplier? (Y/N)? ");
+                String supplierDelete = scan.next();
+                switch (supplierDelete){
+                    case "Y": {
+                        break;
+                    }
+                    case "N": {
+                        return;
+                    }
+                }
+            }
+        }
+    }
+
+    public static void viewSupplier() {
+        clearConsole();
+        System.out.println("+---------------------------------------------------------------------+");
+        System.out.println("|                            VIEW SUPPLIER                            |");
+        System.out.println("+---------------------------------------------------------------------+\n");
+
+        System.out.println("+-----------------------+-----------------------------+");
+        System.out.printf("|   %S  |    %S    |%n","supplier id","supplier name");
+        System.out.println("+-----------------------+-----------------------------+");
+
+        for (int i = 0; i <supplierDetails.length; i++) {
+            System.out.printf("|\t%s\t\t|\t\t%s    \t\t|%n",supplierDetails[i][0],supplierDetails[i][1]);        }
+        System.out.println("+-----------------------+----------+");
+
+        System.out.println("Do you go to supplier manage page(Y/N)? ");
+        char yesOrNo = scan.next().charAt(0);
+        switch (yesOrNo){
+            case 'Y': {
+                break;
+            }
+        }
+
+    }
+
+    public final static void clearConsole() {
         try {
-            if (os.equals("Linux")) {
-                System.out.print("\033\143");
-            } else if (os.equals("Windows")) {
+            final String os = System.getProperty("os.name");
+            if (os.contains("Windows")) {
                 new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
             } else {
                 System.out.print("\033[H\033[2J");
                 System.out.flush();
             }
         } catch (final Exception e) {
-//handle the exception
-            System.err.println(e.getMessage());
+            e.printStackTrace();
         }
     }
+    public static void grow() {
+        String[][] temp = new String[supplierDetails.length+1][2];
+        for (int i = 0; i < supplierDetails.length; i++) {
+            for (int j = 0; j < supplierDetails[i].length; j++) {
+                temp[i][j] = supplierDetails[i][j];
+            }
+        }
+        supplierDetails = temp;
+    }
+    public static void remove() {
+        String[][] temp = new String[supplierDetails.length-1][2];
+        for (int i = 0, k=0; i < temp.length; i++) {
+            if (supplierDetails[i][0].equals("null")) {
+                k++;
+            }
+            for (int j = 0; j < temp[i].length; j++) {
+                temp[i][j] = supplierDetails[i+k][j];
+            }
+        }
+        supplierDetails = temp;
+    }
+
 }
