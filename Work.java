@@ -1,10 +1,11 @@
-import java.util.Arrays;
-import java.util.Scanner;
+import java.util.*;
 
 public class Work {
     public static Scanner scan  = new Scanner(System.in);
     public static String[][] loginDetails = {{"Lahiru", "1212"}};
     public static String[][] supplierDetails = new String[0][0];
+    public static String[] category = new String[0];
+    public static String[][] items = new String[0][0];
 
     public static void main(String[] args) {
 //        loginPage();
@@ -46,7 +47,6 @@ public class Work {
             System.out.println( "[1] Change the Credentials                                    [2] Supplier Manage\n" +
                                 "[3] Stock Manage                                              [4] Log out\n" +
                                 "[5] Exit the system\n");
-            while (true){
                 System.out.print("Enter an option to continue > ");
                 int optionNum = scan.nextInt();
 
@@ -60,7 +60,7 @@ public class Work {
                         break;
                     }
                     case 3: {
-                        System.out.println(optionNum);
+                        stockManage();
                         break;
                     }
                     case 4: {
@@ -72,7 +72,6 @@ public class Work {
                         break;
                     }
                 }
-            }
         }
     }
     public static void credentialsManage() {
@@ -124,9 +123,9 @@ public class Work {
     public static void exitMenu() {
         System.exit(0);
     }
+
     public static void supplierManage() {
         while (true){
-            while (true){
                 clearConsole();
                 System.out.println("+---------------------------------------------------------------------+");
                 System.out.println("|                           SUPPLIER MANAGE                           |");
@@ -157,13 +156,14 @@ public class Work {
                         break;
                     }
                     case 5: {
-
+                        searchSupplier();
+                        break;
                     }
                     case 6: {
-
+                        welcomMenu();
+                        break;
                     }
                 }
-            }
         }
     }
     public static void addSupplier() {
@@ -171,7 +171,6 @@ public class Work {
         System.out.println("+---------------------------------------------------------------------+");
         System.out.println("|                             ADD SUPPLIER                            |");
         System.out.println("+---------------------------------------------------------------------+\n");
-
 
         L1: while (true) {
             System.out.print("Supplier id    :");
@@ -197,10 +196,10 @@ public class Work {
                 String supplierAdd = scan.next();
 
                 switch (supplierAdd){
-                    case "Y": {
+                    case "Y", "y": {
                         break;
                     }
-                    case "N": {
+                    case "N", "n": {
                         return;
                     }
                 }
@@ -283,10 +282,11 @@ public class Work {
                         return;
                     }
                 }
+            }else {
+                System.out.println("can't find supplier id.please try again!");
             }
         }
     }
-
     public static void viewSupplier() {
         clearConsole();
         System.out.println("+---------------------------------------------------------------------+");
@@ -294,12 +294,12 @@ public class Work {
         System.out.println("+---------------------------------------------------------------------+\n");
 
         System.out.println("+-----------------------+-----------------------------+");
-        System.out.printf("|   %S  |    %S    |%n","supplier id","supplier name");
+        System.out.printf("|   %S  |    %S    \t\t\t\t  |%n","supplier id","supplier name");
         System.out.println("+-----------------------+-----------------------------+");
 
         for (int i = 0; i <supplierDetails.length; i++) {
-            System.out.printf("|\t%s\t\t|\t\t%s    \t\t|%n",supplierDetails[i][0],supplierDetails[i][1]);        }
-        System.out.println("+-----------------------+----------+");
+            System.out.printf("|\t\t%s\t\t |\t\t%s    \t\t|%n",supplierDetails[i][0],supplierDetails[i][1]);        }
+        System.out.println("+-----------------------+---------------+");
 
         System.out.println("Do you go to supplier manage page(Y/N)? ");
         char yesOrNo = scan.next().charAt(0);
@@ -308,7 +308,483 @@ public class Work {
                 break;
             }
         }
+    }
+    public static void searchSupplier() {
+        clearConsole();
+        System.out.println("+---------------------------------------------------------------------+");
+        System.out.println("|                            SEARCH SUPPLIER                          |");
+        System.out.println("+---------------------------------------------------------------------+\n");
 
+        boolean whileCondition = true;
+        L1: while (whileCondition) {
+            System.out.print("Supplier ID    : ");
+            String sId = scan.next();
+            int index = -1;
+            boolean condition = false;
+
+            for (int i = 0; i <supplierDetails.length; i++) {
+                if (supplierDetails[i][0].equals(sId)) {
+                    index = i;
+                    condition = true;
+                    break;
+                }
+            }
+
+            if (condition==false){
+                System.out.println("can't find supplier id. please try again!");
+            }else {
+                while (condition){
+                    whileCondition = false;
+
+                    System.out.println("Supplier Id    : " + supplierDetails[index][0]);
+                    System.out.println("Supplier Name  : " + supplierDetails[index][1]);
+
+                    System.out.print("supplier search successfully!Do you want to search another supplier? (Y/N)? ");
+                    char supSearch = scan.next().charAt(0);
+
+                    switch (supSearch){
+                        case 'Y': {
+                            whileCondition = true;
+                            break;
+                        }
+                        case 'N': {
+                            break L1;
+                        }
+                        case 'y': {
+                            whileCondition = true;
+                            break;
+                        }
+                        case 'n': {
+                            break L1;
+                        }
+                        default: {
+                            System.out.println("please enter a valid character.");
+                        }
+                    }
+                }
+            }
+        }
+    }
+    public static void stockManage() {
+        while (true){
+            clearConsole();
+            System.out.println("+---------------------------------------------------------------------+");
+            System.out.println("|                            STOCK MANAGEMENT                         |");
+            System.out.println("+---------------------------------------------------------------------+\n");
+
+            System.out.println( "[1] Manage Item Categories                                    [2] Add Item\n" +
+                                "[3] Get Items Supplier Wish                                   [4] View Item\n" +
+                                "[5] Rank Items Per Unit Price                                 [6] Home Page\n");
+
+                System.out.print("Enter an option to continue > ");
+                int optionNum = scan.nextInt();
+
+                switch (optionNum){
+                    case 1: {
+                        manageItemCategories();
+                        break;
+                    }
+                    case 2: {
+                        addItem();
+                        break;
+                    }
+                    case 3: {
+                        searchSupplierAndItem();
+                        break;
+                    }
+                    case 4: {
+                        viewItem();
+                        break;
+                    }
+                    case 5: {
+                        sortItem();
+                        break;
+                    }
+                    case 6: {
+                        welcomMenu();
+                        break;
+                    }
+                }
+        }
+    }
+    public static void manageItemCategories() {
+        while (true) {
+            clearConsole();
+            System.out.println("+---------------------------------------------------------------------+");
+            System.out.println("|                         MANAGE ITEM CATEGORIES                      |");
+            System.out.println("+---------------------------------------------------------------------+\n");
+
+            System.out.println( "[1] Add New Item Categories                                   [2] Delete Item Category\n" +
+                                "[3] Update Item Category                                      [4] Stock Management\n");
+
+                System.out.print("Enter an option to continue > ");
+                int optionNum = scan.nextInt();
+
+                switch (optionNum){
+                    case 1: {
+                        addItemCategory();
+                        break;
+                    }
+                    case 2: {
+                        deleteItemCategory();
+                        break;
+                    }
+                    case 3: {
+                        updateItemCategory();
+                        break;
+                    }
+                    case 4: {
+                        stockManage();
+                    }
+                }
+        }
+    }
+    public static void addItemCategory() {
+        clearConsole();
+        System.out.println("+---------------------------------------------------------------------+");
+        System.out.println("|                           ADD ITEM CATEGORIES                       |");
+        System.out.println("+---------------------------------------------------------------------+\n");
+
+        boolean whileCondition = true;
+        L1: while (whileCondition){
+            whileCondition = false;
+            growCategory();
+
+            System.out.print("Enter the new item category: ");
+            category[category.length -1] = scan.next();
+
+            System.out.print("added successfully!Do you want to add another category? (Y/N)? ");
+            char supAddCategory = scan.next().charAt(0);
+
+            switch (supAddCategory){
+                case 'Y': {
+                    whileCondition = true;
+                    break;
+                }
+                case 'y': {
+                    whileCondition = true;
+                    break;
+                }
+                case 'N': {
+                    break L1;
+                }
+
+                case 'n': {
+                    break L1;
+                }
+            }
+        }
+    }
+    public static void updateItemCategory() {
+        clearConsole();
+        System.out.println("+---------------------------------------------------------------------+");
+        System.out.println("|                         UPDATE ITEM CATEGORIES                      |");
+        System.out.println("+---------------------------------------------------------------------+\n");
+
+        L1: while (true){
+            System.out.print("Enter the update item category name: ");
+            String categoryName = scan.next();
+
+            boolean equal = false;
+            int index = -1;
+
+            for (int i = 0; i < category.length; i++) {
+                if (category[i].equals(categoryName)) {
+                    equal = true;
+                    index = i;
+                }
+            }
+            if (equal) {
+                System.out.print("Enter the new item category name: ");
+                String newCategoryName = scan.next();
+
+                category[index] = newCategoryName;
+
+                System.out.print("update successfully!Do you want to update another item category? (Y/N)? ");
+                char supUpdateCategory = scan.next().charAt(0);
+
+                switch (supUpdateCategory){
+                    case 'Y': {
+                        break;
+                    }
+                    case 'y': {
+                        break;
+                    }
+                    case 'N': {
+                        break L1;
+                    }
+
+                    case 'n': {
+                        break L1;
+                    }
+                    default: {
+                        System.out.println("please enter a valid character!");
+                    }
+                }
+            }else{
+                System.out.println("can't find category name.please try again");
+            }
+        }
+    }
+    public static void deleteItemCategory() {
+        clearConsole();
+        System.out.println("+---------------------------------------------------------------------+");
+        System.out.println("|                         DELETE ITEM CATEGORIES                      |");
+        System.out.println("+---------------------------------------------------------------------+\n");
+
+        L1: while (true){
+            System.out.print("Enter the delete item category name: ");
+            String categoryName = scan.next();
+
+            boolean equal = false;
+            int index = -1;
+
+            for (int i = 0; i < category.length; i++) {
+                if (category[i].equals(categoryName)) {
+                    equal = true;
+                    index = i;
+                    break;
+                }
+            }
+
+            if (equal) {
+                category[index] = "null";
+                removeCategory();
+
+                System.out.print("delete successfully! Do you want to delete another category? (Y/N)? ");
+                String categoryDelete = scan.next();
+                switch (categoryDelete){
+                    case "Y": {
+                        break;
+                    }
+                    case "N": {
+                        return;
+                    }
+                }
+            }else {
+                System.out.println("can't find category id.please try again!");
+            }
+        }
+    }
+    public static void addItem() {
+        clearConsole();
+        System.out.println("+---------------------------------------------------------------------+");
+        System.out.println("|                                ADD ITEM                             |");
+        System.out.println("+---------------------------------------------------------------------+\n");
+
+        boolean whileCondition = true;
+        while (whileCondition) {
+            whileCondition = false;
+            growItem();
+
+            if (category.length==0) {
+                System.out.println("OOPS! It seems  that you don't have any item category in the system.");
+                System.out.print("Do you want to add a new item category? (Y/N): ");
+                char supAddCategory = scan.next().charAt(0);
+
+                switch (supAddCategory) {
+                    case 'Y', 'y': {
+                        addItemCategory();
+                        return;
+                    }
+                    case 'N', 'n': {
+                        System.exit(0);
+                    }
+                }
+            }
+            if (supplierDetails.length==0) {
+                System.out.println("OOPS! It seems  that you don't have any suppliers in the system.");
+                System.out.print("Do you want to add a new supplier? (Y/N): ");
+                char supAddCategory = scan.next().charAt(0);
+
+                switch (supAddCategory) {
+                    case 'Y', 'y': {
+                        addSupplier();
+                        return;
+                    }
+                    case 'N', 'n': {
+                        System.exit(0);
+                    }
+            }
+            }else {
+                System.out.print("Item Code: ");
+                items[items.length-1][0] = scan.next();
+
+                System.out.println("+---------------+-----------------------+---------------------------------------+");
+                System.out.println("|       #       |      SUPPLIER ID      |              SUPPLIER NAME            |");
+                System.out.println("+---------------+-----------------------+---------------------------------------+");
+                for (int i = 0; i < supplierDetails.length; i++){
+                    System.out.printf("|\t%d\t|\t%s\t\t|\t\t%s    \t\t|%n",(i+1),supplierDetails[i][0],supplierDetails[i][1]);
+                }
+                System.out.println("+---------------+-----------------------+---------------------------------------+");
+
+                while(true){
+                    System.out.print("Enter supplier number > ");
+                    int supplierNumber = scan.nextInt();
+                    if (supplierNumber<=supplierDetails.length){
+                        items[items.length-1][1]=supplierDetails[supplierNumber-1][0];
+                        break;
+                    }
+                    System.out.println("Enter valid number ! ");
+                }
+
+                System.out.println("Item Categories:");
+                System.out.println("+---------------+---------------------------------------+");
+                System.out.println("|      #        |              CATEGORY NAME            |");
+                System.out.println("+---------------+---------------------------------------+");
+                for (int i = 0; i < category.length; i++){
+                    System.out.printf("|\t%d\t|\t\t%s    \t\t|%n",(i+1),category[i]);
+                }
+                System.out.println("+---------------+---------------------------------------+");
+
+                while(true){
+                    System.out.print("Enter the category number > ");
+                    int categoryNumber = scan.nextInt();
+                    if (categoryNumber<=category.length){
+                        items[items.length-1][2]=category[categoryNumber-1];
+                        break;
+                    }
+                    System.out.println("Enter valid number ! ");
+                }
+
+                System.out.print("Description : ");
+                items[items.length-1][3] = scan.next();
+                System.out.print("Unit Price  : ");
+                items[items.length-1][4] = scan.next();
+                System.out.print("Qty on hand : ");
+                items[items.length-1][5] = scan.next();
+                System.out.print("successfully added!Do you want to add another item? (Y/N)? ");
+                char supAddCategory = scan.next().charAt(0);
+
+                switch (supAddCategory){
+                    case 'Y','y' : {
+                        whileCondition = true;
+                    }
+                    case 'N','n': {
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    public static void searchSupplierAndItem() {
+        clearConsole();
+        System.out.println("+---------------------------------------------------------------------+");
+        System.out.println("|                            SEARCH SUPPLIER                          |");
+        System.out.println("+---------------------------------------------------------------------+\n");
+
+        while (true) {
+            System.out.print("Enter Supplier Id: ");
+            String supplierId = scan.next();
+            System.out.print("Supplier Name: ");
+            String supplierName = scan.next();
+
+            boolean condition = false;
+            for (int i = 0; i <supplierDetails.length ; i++) {
+                if (supplierId.equals(supplierDetails[i][0]) && supplierName.equals(supplierDetails[i][1])) {
+                    condition = true;
+                }
+            }
+            if (condition) {
+                System.out.println("+-------------------+--------------------------+------------------+---------------+----------------+");
+                System.out.println("|     ITEM CODE     |      DESCRIPTION         |    UNIT PRICE    |  QTY ON HAND  |    CATEGORY    |");
+                System.out.println("+-------------------+--------------------------+------------------+---------------+----------------+");
+                for (int i = 0; i < items.length; i++){
+                        System.out.printf("|%10S         |%16S          |%10S        |%10S     |%10S      |\n",items[i][0],items[i][3],items[i][4],items[i][5],items[i][2]);
+                }
+                System.out.println("+-------------------+--------------------------+------------------+---------------+----------------+");
+                L1: while(true) {
+                    System.out.print("Search successful!Do you want to  another search ? (Y/N)");
+                    char option = scan.next().charAt(0);
+
+                    switch (option){
+                        case 'Y', 'y': {
+                            break L1;
+                        }
+                        case 'N', 'n': {
+                          return;
+                        }
+                    }
+                }
+            }else {
+                System.out.println("Invalid Supplier Id or Supplier Name!Please try again.");
+            }
+        }
+    }
+    public static void viewItem(){
+        clearConsole();
+        System.out.println("+-------------------------------------------------------------------------+");
+        System.out.println("|                               VIEW ITEMS                                |");
+        System.out.println("+-------------------------------------------------------------------------+\n");
+
+        for (int i = 0; i < category.length; i++){
+            System.out.println(category[i]+" : ");
+            System.out.println("+-------------------+--------------------------+------------------+---------------+----------------+");
+            System.out.println("|        SID        |           CODE           |       DESC       |     PRICE     |       QTY      |");
+            System.out.println("+-------------------+--------------------------+------------------+---------------+----------------+");
+            for (int j = 0; j < items.length; j++){
+                if (items[j][2].equals(category[i])){
+                    System.out.printf("|%10S         |%16S          |%10S        |%10S     |%10S      |\n",items[j][1],items[j][0],items[j][3],items[j][4],items[j][5]);
+                }
+            }
+            System.out.println("+-------------------+--------------------------+------------------+---------------+----------------+\n\n");
+        }
+        while(true){
+            System.out.print("Do you want to go stock management page(Y/N) ? ");
+            char option = scan.next().charAt(0);
+            switch (option){
+                case 'Y', 'y': {
+                    return;
+                }
+                case 'N', 'n': {
+                    System.exit(0);
+                } default: {
+                    System.out.println("Please enter correct character !!");
+                }
+            }
+        }
+    }
+    public static void sortItem(){
+        double[] sortedAr=new double[items.length];
+        for (int i = 0; i < items.length; i++)
+            sortedAr[i]=Double.parseDouble(items[i][4]);
+
+        for (int i = 0; i < sortedAr.length; i++){
+            for (int j = 0; j < sortedAr.length-1; j++){
+                if (sortedAr[j]>sortedAr[j+1]){
+                    double x = sortedAr[j];
+                    sortedAr[j]=sortedAr[j+1];
+                    sortedAr[j+1]=x;
+                }
+            }
+        }
+        clearConsole();
+        System.out.println("+-------------------------------------------------------------------------+");
+        System.out.println("|                            RANKED UNIT PRICE                            |");
+        System.out.println("+-------------------------------------------------------------------------+\n");
+        System.out.println("+-------------------+--------------------------+------------------+---------------+----------------+----------------+");
+        System.out.println("|        SID        |           CODE           |       DESC       |     PRICE     |       QTY      |       CAT      |");
+        System.out.println("+-------------------+--------------------------+------------------+---------------+----------------+----------------+");
+        for (int i = 0; i < sortedAr.length; i++){
+            for (int j = 0; j < items.length; j++){
+                if( Double.parseDouble(items[j][4])==sortedAr[i]){
+                    System.out.printf("|%10S         |%16S          |%10S        |%10S     |%10S      |%10S      |\n",items[j][1],items[j][0],items[j][3],items[j][4],items[j][5],items[j][2]);
+                }
+            }
+        }
+        System.out.println("+-------------------+--------------------------+------------------+---------------+----------------+----------------+");
+
+        while(true){
+            System.out.print("Do you want to go stock management page(Y/N) ? ");
+            char option = scan.next().charAt(0);
+            if(option=='Y' || option=='y'){
+                return;
+            }else if(option=='N' || option=='n'){
+                System.exit(0);
+            }else{
+                System.out.println("Please enter correct character !!");
+            }
+        }
     }
 
     public final static void clearConsole() {
@@ -333,6 +809,20 @@ public class Work {
         }
         supplierDetails = temp;
     }
+    public static void growCategory() {
+        String[] temp = new String[category.length + 1];
+        for (int i = 0; i < category.length; i++) {
+                temp[i] = category[i];
+        }
+        category = temp;
+    }
+    public static void growItem() {
+        String[][] temp = new String[items.length + 1][6];
+        for (int i = 0; i < items.length; i++) {
+            temp[i] = items[i];
+        }
+        items = temp;
+    }
     public static void remove() {
         String[][] temp = new String[supplierDetails.length-1][2];
         for (int i = 0, k=0; i < temp.length; i++) {
@@ -345,5 +835,14 @@ public class Work {
         }
         supplierDetails = temp;
     }
-
+    public static void removeCategory() {
+        String[] temp = new String[category.length-1];
+        for (int i = 0, k=0; i < temp.length; i++) {
+            if (category[i].equals("null")) {
+                k++;
+            }
+            temp[i] = category[i+k];
+        }
+        category = temp;
+    }
 }
