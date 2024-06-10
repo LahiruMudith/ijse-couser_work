@@ -8,7 +8,7 @@ public class Work {
     public static String[][] items = new String[0][0];
 
     public static void main(String[] args) {
-//        loginPage();
+       loginPage();
         welcomMenu();
     }
     public static void loginPage() {
